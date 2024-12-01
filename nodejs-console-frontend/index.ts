@@ -3,17 +3,15 @@ import { CharStream, CommonTokenStream, ParseTreeWalker }  from 'antlr4';
 import Scriptoslav80Lexer from './antlr4-generated/Scriptoslav80Lexer'
 import Scriptoslav80Parser from './antlr4-generated/Scriptoslav80Parser'
 
-import {Scriptoslav80Interpreter} from "./antlr4-generated/visitor";
+import {Scriptoslav80Interpreter} from "./antlr4-generated/interpreter";
+import {Scriptoslav80Compiler} from "./antlr4-generated/compiler";
 
 const input = `
 
   let i = 0;
-  while (i != 5) {
-    monitor.log(i);
-    i = i + 1;
-  }
-  
-  monitor.log(123);
+  let b = 5;
+ 
+  let a = 5
 `
 
 const chars = new CharStream(input); // replace this with a FileStream as required
@@ -24,7 +22,8 @@ const parser = new Scriptoslav80Parser(tokens);
 
 const tree = parser.program();
 
-const walker = new Scriptoslav80Interpreter();
+// const walker = new Scriptoslav80Interpreter();
+const walker = new Scriptoslav80Compiler();
 ParseTreeWalker.DEFAULT.walk(walker, tree);
 
 console.log('\n-- done --')

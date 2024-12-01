@@ -14,8 +14,10 @@ interface VariableProps {
 interface Variable {
   props: VariableProps
   value?: VariableValue
+  memoryAdr: number
 }
 
+let memCounter = 0x800;
 const varMap = new Map<string, Variable>();
 
 function varInit(props: VariableProps, value?: VariableValue) {
@@ -23,7 +25,9 @@ function varInit(props: VariableProps, value?: VariableValue) {
     throw new Error('Reinitialization of existing variable')
   }
 
-  varMap.set(props.name, {props: {...props}, value: {...value}} as Variable);
+  varMap.set(props.name, {props: {...props}, memoryAdr: memCounter, value: {...value}} as Variable);
+
+  memCounter++;
 }
 
 function assignThatVariableExists(name: string) {
@@ -44,6 +48,14 @@ function varGet(name: string) {
   return v.value;
 }
 
+function varGetAdr(name: string) {
+  assignThatVariableExists(name);
+
+  const v = varMap.get(name);
+
+  return v?.memoryAdr;
+}
+
 function varAssign(name: string, value: VariableValue) {
   assignThatVariableExists(name);
 
@@ -62,4 +74,4 @@ function varAssign(name: string, value: VariableValue) {
   return { ...v.value };
 }
 
-export { varInit, varGet, varAssign, VariableValue, VariableType, VariableProps }
+export { varInit, varGet, varGetAdr, varAssign, VariableValue, VariableType, VariableProps }
