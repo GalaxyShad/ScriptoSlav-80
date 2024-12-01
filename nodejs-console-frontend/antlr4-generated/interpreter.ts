@@ -1,4 +1,3 @@
-
 import {
   AssignmentContext,
   CompExprContext,
@@ -51,7 +50,7 @@ function calculate(left: VariableValue, op: string, right: VariableValue): Varia
     case '-':
       return makeInt(l - r);
 
-      // Logic operations
+    // Logic operations
     case '==':
       return makeBool(l === r);
     case '!=':
@@ -69,7 +68,7 @@ function calculate(left: VariableValue, op: string, right: VariableValue): Varia
   throw new Error('O_o')
 }
 
-class TreeWalker extends Scriptoslav80Listener {
+class Scriptoslav80Interpreter extends Scriptoslav80Listener {
 
   // Variable manipulations
   exitVarDecl = (ctx: VarDeclContext) => {
@@ -113,18 +112,18 @@ class TreeWalker extends Scriptoslav80Listener {
     (ctx as any).evaluated = calculate(left, ctx._op.text, right);
   }
 
-  exitMulDivExpr = (ctx: MulDivExprContext) => {
+  exitMulDivExpr = (ctx: EvaluatedContext<MulDivExprContext>) => {
     const left = getEvaluated(ctx._left);
     const right = getEvaluated(ctx._right);
 
-    (ctx as any).evaluated = calculate(left, ctx._op.text, right);
+    ctx.evaluated = calculate(left, ctx._op.text, right);
   }
 
   exitCompExpr = (ctx: EvaluatedContext<CompExprContext>) => {
     const left = getEvaluated(ctx._left);
     const right = getEvaluated(ctx._right);
 
-    (ctx as any).evaluated = calculate(left, ctx.compOperator().getText(), right);
+    ctx.evaluated = calculate(left, ctx.compOperator().getText(), right);
   }
 
 
@@ -176,9 +175,6 @@ class TreeWalker extends Scriptoslav80Listener {
       ctx.children = []
     }
   }
-
-
-
 }
 
-export {TreeWalker};
+export {Scriptoslav80Interpreter};
