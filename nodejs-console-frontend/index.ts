@@ -8,10 +8,10 @@ import {Scriptoslav80Compiler} from "./antlr4-generated/compiler";
 
 const input = `
 
-  let i = 0;
-  let b = 5;
- 
-  let a = 5
+  let i = 2;
+  let b = i + i + 5 + 2 + i + 8;
+  
+  monitor.log(b);
 `
 
 const chars = new CharStream(input); // replace this with a FileStream as required
