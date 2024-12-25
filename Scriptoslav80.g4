@@ -48,6 +48,7 @@ PLUS                : '+' ;
 MINUS               : '-' ;
 
 ASSIGN              : '=' ;
+
 EQUAL               : '==' ;
 NOT_EQUAL           : '!=' ;
 LESS                : '<' ;
@@ -57,3 +58,4 @@ GREATER_OR_EQUAL    : '>=' ;
 
 SPACE               : [ \r\n\t]+ -> skip;
 LINE_COMMENT        : '//' ~[\n\r]* -> skip;
+
